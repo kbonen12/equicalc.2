@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — EquiCalc</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --card: #1e2333;
+    --border: #2a3050;
+    --accent: #7eb8a4;
+    --accent2: #c9a86c;
+    --danger: #e07070;
+    --text: #e8ecf4;
+    --muted: #7a85a3;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Fraunces', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(126,184,164,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(126,184,164,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(15,17,23,0.85);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-mark {
+    width: 38px; height: 38px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .nav-link {
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--text); }
+  .nav-link.active { color: var(--accent); }
+
+  /* ── MAIN ── */
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 40px 100px;
+  }
+
+  /* ── EYEBROW ── */
+  .eyebrow {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeUp 0.4s 0.05s forwards;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ── PROFILE ── */
+  .profile {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 60px;
+    align-items: start;
+    margin-bottom: 64px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.1s forwards;
+  }
+
+  .photo-wrap {
+    position: relative;
+  }
+
+  .photo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    z-index: 0;
+  }
+
+  .photo-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    right: -12px;
+    width: 80px;
+    height: 80px;
+    background: var(--accent);
+    opacity: 0.08;
+    border-radius: 4px;
+    z-index: 0;
+  }
+
+  .photo {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 4px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    filter: grayscale(15%);
+  }
+
+  .name-block {
+    padding-top: 8px;
+  }
+
+  .name {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .title-line {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 24px;
+  }
+
+  .bio {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.85;
+    margin-bottom: 32px;
+  }
+
+  .bio strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── TAGS ── */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 36px;
+  }
+
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .tag.green {
+    color: var(--accent);
+    border-color: rgba(126,184,164,0.3);
+    background: rgba(126,184,164,0.05);
+  }
+  .tag.gold {
+    color: var(--accent2);
+    border-color: rgba(201,168,108,0.3);
+    background: rgba(201,168,108,0.05);
+  }
+
+  /* ── LLC CARD ── */
+  .llc-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.2s forwards;
+    margin-bottom: 24px;
+  }
+
+  .llc-icon {
+    width: 40px; height: 40px;
+    background: rgba(201,168,108,0.1);
+    border: 1px solid rgba(201,168,108,0.2);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .llc-text {
+    flex: 1;
+  }
+
+  .llc-name {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .llc-desc {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── MISSION SECTION ── */
+  .mission {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 28px 28px;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.25s forwards;
+  }
+
+  .mission-label {
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .mission-text {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    padding: 18px 22px;
+    background: rgba(224,112,112,0.06);
+    border: 1px solid rgba(224,112,112,0.2);
+    border-radius: 4px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    opacity: 0;
+    animation: fadeUp 0.5s 0.3s forwards;
+  }
+
+  .disclaimer-text {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .disclaimer-text strong {
+    color: var(--danger);
+    display: block;
+    margin-bottom: 3px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 30px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer-logo {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--muted);
+    text-decoration: none;
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 680px) {
+    nav { padding: 16px 20px; }
+    .nav-links { gap: 16px; }
+    .wrap { padding: 50px 20px 70px; }
+    .profile { grid-template-columns: 1fr; gap: 32px; }
+    .photo { aspect-ratio: 1/1; max-width: 200px; }
+    .name { font-size: 32px; }
+    footer { padding: 24px 20px; flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="logo-mark">🐴</div>
+    <span><span style="color:#e8ecf4">Equi</span><span style="color:var(--accent)">Calc</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="calculators.html" class="nav-link">Calculators</a>
+    <a href="about.html" class="nav-link active">About</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="eyebrow">About the Author</div>
+
+  <div class="profile">
+    <div class="photo-wrap">
+      <img src="kyle.jpg" alt="Kyle B" class="photo" />
+    </div>
+
+    <div class="name-block">
+      <div class="name">Kyle B.</div>
+      <div class="title-line">Doctor of Veterinary Medicine Student</div>
+      <div class="divider"></div>
+      <p class="bio">
+        I'm a <strong>DVM student at Colorado State University</strong> with a focus on food animal and production medicine. I'm particularly interested in <strong>veterinary entrepreneurship</strong> and developing practical tools that improve efficiency and decision-making in clinical practice.
+      </p>
+      <p class="bio">
+        This platform was created to provide simple, reliable calculators that <strong>veterinarians and students can use in real-world settings</strong> — built out of a genuine need I saw during my training for fast, trustworthy clinical math at the point of care.
+      </p>
+      <div class="tags">
+        <span class="tag green">Colorado State University</span>
+        <span class="tag green">DVM Candidate</span>
+        <span class="tag gold">Food Animal Medicine</span>
+        <span class="tag gold">Production Medicine</span>
+        <span class="tag">Veterinary Entrepreneurship</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="llc-card">
+    <div class="llc-icon">⚖️</div>
+    <div class="llc-text">
+      <div class="llc-name">KB Enterprises LLC</div>
+      <div class="llc-desc">EquiCalc is a product of KB Enterprises LLC. All content, calculations, and tools on this platform are owned and operated by KB Enterprises LLC.</div>
+    </div>
+  </div>
+
+  <div class="mission">
+    <div class="mission-label">Mission</div>
+    <div class="mission-text">"Simple, reliable tools for veterinarians and students — built by someone who needs them too."</div>
+  </div>
+
+  <div class="disclaimer">
+    <div style="color:#e07070;font-size:14px;flex-shrink:0;margin-top:2px;">⚠</div>
+    <div class="disclaimer-text">
+      <strong>Clinical Disclaimer</strong>
+      EquiCalc is intended as a calculation aid for licensed veterinary professionals. All drug doses, fluid rates, and formulations must be verified against current references and adapted to the individual patient. This tool does not replace clinical judgment, specialist consultation, or approved prescribing guidelines. KB Enterprises LLC assumes no liability for clinical decisions made using this platform.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">🐴 <span style="color:#e8ecf4">Equi</span><span style="color:var(--accent)">Calc</span></a>
+  <div class="footer-copy">© KB Enterprises LLC · All rights reserved</div>
+</footer>
+
+</body>
+</html>
